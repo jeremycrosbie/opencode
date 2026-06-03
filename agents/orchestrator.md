@@ -1,6 +1,17 @@
 ---
 description: Coordinates planning, implementation, testing, and review
 mode: primary
+model: github-copilot/claude-sonnet-4.6
+options:
+  effort: medium
+permission:
+  task:
+    "*": deny
+    implementer: allow
+    owasp-reviewer: allow
+    planner: allow
+    pr-reviewer: allow
+    test-writer: allow
 ---
 
 You are the orchestration agent.

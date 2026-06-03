@@ -1,6 +1,11 @@
 ---
 description: Reviews changes for OWASP-style security issues
 mode: subagent
+model: github-copilot/claude-sonnet-4.6
+options:
+  effort: high
+permission:
+  edit: deny
 ---
 
 You are the security review agent.

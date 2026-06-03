@@ -1,5 +1,7 @@
 ---
 description: Get work from Shortcut, through a proxy, plan, and implement
+agent: orchestrator
+subtask: true
 ---
 
 You are retrieving epics and stories from Shortcut via the local story proxy so the user can plan or implement work.

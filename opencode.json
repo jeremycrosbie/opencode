@@ -1,129 +1,46 @@
 {
   "$schema": "https://opencode.ai/config.json",
+  "default_agent": "orchestrator",
+  "permission": {
+    "read": "allow",
+    "glob": "allow",
+    "grep": "allow",
+    "list": "allow",
+    "skill": "allow",
+    "todowrite": "allow",
+    "external_directory": {
+      "*": "ask",
+      "~/.config/opencode": "allow",
+      "~/.config/opencode/**": "allow"
+    },
+    "bash": {
+      "*": "ask",
+      "pwd": "allow",
+      "ls": "allow",
+      "ls *": "allow",
+      "wc": "allow",
+      "wc *": "allow",
+      "tail": "allow",
+      "tail *": "allow",
+      "cat": "allow",
+      "cat *": "allow",
+      "git status": "allow",
+      "git status *": "allow",
+      "git diff": "allow",
+      "git diff *": "allow",
+      "git log": "allow",
+      "git log *": "allow",
+      "git show": "allow",
+      "git show *": "allow"
+    }
+  },
   "agent": {
-		"build": {
-			"mode": "primary",
-			"model": "github-copilot/gpt-5.4",
-			"permission": {
-        "edit": "allow",
-        "bash": "allow",
-				"git log *": "allow",
-				"git show *": "allow",
-				"ls *": "allow",
-				"wc *": "allow",
-				"tail *": "allow",
-				"cat *": "allow"
-      }
-		},
-    "implementer": {
-      "description": "Implements approved feature specifications",
-      "mode": "subagent",
-      "model": "github-copilot/claude-sonnet-4.6",
-      "permission": {
-        "bash": "ask",
-        "edit": "allow",
-        "patch": "allow",
-        "write": "allow",
-				"git log *": "allow",
-				"git show *": "allow",
-				"ls *": "allow",
-				"wc *": "allow",
-				"tail *": "allow",
-				"cat *": "allow"
-      }
-    },
-    "orchestrator": {
-      "description": "Coordinates planning, implementation, testing, and security review",
+    "build": {
       "mode": "primary",
-      "model": "github-copilot/claude-sonnet-4.6",
-      "options": {
-        "effort": "medium"
-      },
-      "permission": {
-        "bash": "ask",
-				"git log *": "allow",
-				"git show *": "allow",
-				"git status *": "allow",
-				"git diff *": "allow",
-				"ls *": "allow",
-				"wc *": "allow",
-				"tail *": "allow",
-				"cat *": "allow",
-        "task": {
-          "*": "deny",
-          "implementer": "allow",
-          "owasp-reviewer": "allow",
-          "planner": "allow",
-          "pr-reviewer": "allow",
-          "test-writer": "allow"
-        }
-      }
-    },
-    "owasp-reviewer": {
-      "description": "Reviews diffs for OWASP-aligned security issues",
-      "mode": "subagent",
-      "model": "github-copilot/claude-sonnet-4.6",
-      "options": {
-        "effort": "high"
-      },
-      "permission": {
-        "bash": "ask",
-        "edit": "deny",
-        "patch": "deny",
-        "write": "deny",
-				"git log *": "allow",
-				"git show *": "allow",
-				"ls *": "allow",
-				"wc *": "allow",
-				"tail *": "allow",
-				"cat *": "allow"
-      }
-    },
-    "planner": {
-      "description": "Creates implementation plans without changing the codebase",
-      "mode": "primary",
-      "model": "github-copilot/claude-opus-4.6",
-      "options": {
-        "effort": "high"
-      },
-      "permission": {
-        "bash": "ask",
-        "edit": "deny",
-        "patch": "deny",
-        "write": "deny",
-				"git log *": "allow",
-				"git show *": "allow",
-				"ls *": "allow",
-				"wc *": "allow",
-				"tail *": "allow",
-				"cat *": "allow"
-      }
-    },
-    "pr-reviewer": {
-      "model": "github-copilot/claude-sonnet-4.6",
-      "options": {
-        "effort": "high"
-      },
-      "permission": {
-        "bash": "ask",
-				"git log *": "allow",
-				"git show *": "allow",
-				"ls *": "allow",
-				"wc *": "allow",
-				"tail *": "allow",
-				"cat *": "allow",
-        "edit": "deny"
-      }
-    },
-    "test-writer": {
-      "description": "Adds or updates unit and integration tests",
-      "mode": "subagent",
       "model": "github-copilot/gpt-5.4",
       "permission": {
-        "bash": "ask",
         "edit": "allow",
-        "patch": "allow",
-        "write": "allow"
+        "bash": "allow"
       }
     }
   },

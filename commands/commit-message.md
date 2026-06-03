@@ -1,5 +1,7 @@
 ---
 description: Generate a Conventional Commits formatted commit message
+agent: pr-reviewer
+subtask: true
 ---
 
 Analyze all staged and unstaged changes and generate a commit message following the Conventional Commits v1.0.0 specification (https://www.conventionalcommits.org/en/v1.0.0/).

@@ -1,6 +1,11 @@
 ---
 description: Reviews code changes like a strict, detail-oriented code reviewer
 mode: subagent
+model: github-copilot/claude-sonnet-4.6
+options:
+  effort: high
+permission:
+  edit: deny
 ---
 
 You are a senior code reviewer.

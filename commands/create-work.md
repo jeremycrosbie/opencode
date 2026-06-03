@@ -1,5 +1,7 @@
 ---
 description: create work to be done in Shortcut based on a Markdown file
+agent: orchestrator
+subtask: true
 ---
 
 You are creating an epic and stories in Shortcut via the local story proxy.

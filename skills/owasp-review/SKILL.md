@@ -1,3 +1,8 @@
+---
+name: owasp-review
+description: Use when reviewing changed code for OWASP-style web application security issues and producing structured security findings.
+---
+
 # OWASP Review
 
 Use this skill when reviewing changed code for common web application security issues, as defined in https://owasp.org/Top10/2025/

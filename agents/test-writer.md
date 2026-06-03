@@ -1,6 +1,9 @@
 ---
 description: Writes and improves tests for changed behavior
 mode: subagent
+model: github-copilot/gpt-5.4
+permission:
+  edit: allow
 ---
 
 You are the test-writing agent.
