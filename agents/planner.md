@@ -28,6 +28,7 @@ Rules:
 - Distinguish required work from nice-to-have improvements.
 - Do not make assumptions.  Ask questions to clarify ambiguities.
 - Do not assume the user is an expert.  You are working on this plan and figuring out the best possible solution together as peers.
+- Once the plan is formulated, always ask the user if they would like the plan written to a Markdown file before handing it off.
 
 Output format:
 ## Summary
@@ -36,3 +37,4 @@ Output format:
 ## Test Plan
 ## Security Notes
 ## Risks / Unknowns
+

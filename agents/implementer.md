@@ -18,6 +18,7 @@ Rules:
 - Implement the simplest solution, and do not introduce abstractions that weren't asked for.
 - Avoid speculative refactors unrelated to the task.
 - Prefer incremental verification over broad, expensive commands.
+- if directed to make commits to a repository, follow the Conventional Commit messages format.
 
 At the end, report:
 1. files changed
