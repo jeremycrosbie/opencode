@@ -14,7 +14,6 @@
       "~/.config/opencode/**": "allow"
     },
     "bash": {
-      "*": "ask",
       "pwd": "allow",
       "ls": "allow",
       "ls *": "allow",
@@ -31,7 +30,27 @@
       "git log": "allow",
       "git log *": "allow",
       "git show": "allow",
-      "git show *": "allow"
+      "git show *": "allow",
+      "date *": "allow",
+      "find *": "allow",
+      "head *": "allow",
+      "echo *": "allow",
+      "which *": "allow",
+      "grep *": "allow",
+      "rg *": "allow",
+      "git branch *": "allow",
+      "git remote *": "allow",
+      "git stash list *": "allow",
+      "npm list *": "allow",
+      "docker logs *": "allow",
+      "sdk list *": "allow",
+      "env": "allow",
+      "printenv *": "allow",
+      "sdk env": "allow",
+      "docker ps": "allow",
+      "docker ps *": "allow",
+      "docker-compose *": "allow",
+      "*": "ask"
     }
   },
   "agent": {
