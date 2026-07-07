@@ -1,7 +1,7 @@
 ---
 description: Reviews changes for OWASP-style security issues
 mode: subagent
-model: github-copilot/claude-sonnet-4.6
+model: github-copilot/claude-sonnet-5
 options:
   effort: high
 permission:

@@ -1,7 +1,7 @@
 ---
 description: Implements features from an approved plan
 mode: subagent
-model: github-copilot/claude-sonnet-4.6
+model: github-copilot/claude-sonnet-5
 permission:
   edit: allow
 ---

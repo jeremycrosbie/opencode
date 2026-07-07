@@ -15,13 +15,14 @@ Check if $ARGUMENTS contains a URL, a file path, and an optional team name. If s
 
 Once you have the arguments, execute the following steps:
 
-0. If a team name was provided:
+1. Determine the name of the Shortcut workspace.  You can get the list of active workspaces by querying /workspaces, and should be able to infer the workspace from the project in the current working directory.
+2. If a team name was provided:
    a. Call `GET <base_url>/reference/groups` to retrieve all available groups.
    b. Find the group whose `name` matches the provided team name (case-insensitive).
    c. If no match is found, stop and report the error — list the valid group names so the user can correct their input.
    d. Store the matched `group_id` — it will be used as `group_id` in the epic creation request and all story creation requests.
 
-1. **Read and parse the markdown file.** The markdown file can contain more than just stories, so look for content formatted like the following:
+3. **Read and parse the markdown file.** The markdown file can contain more than just stories, so look for content formatted like the following:
 
 ```
 # Epic: <epic name>
@@ -42,10 +43,11 @@ Once you have the arguments, execute the following steps:
 - [ ] <criterion>
 ```
 
-2. `GET /capabilities` will explain what operations are available.
-3. **Create the epic** by calling `POST <base_url>/epics` with the epic name, description, and `group_id` (if a team name was provided).
-4. **Create each story** by calling `POST <base_url>/stories` for each story in the file, using the epic_id returned from step 2. Track a mapping of `story name → story id` as you go.
-5. **Create blocker links** — after all stories are created, for each story that had a `**Blockers:**` line, call `POST <base_url>/stories/link` for each blocker relationship.
+4. `GET /capabilities` will explain what operations are available.
+5. **Look for an existing epic** by calling GET <base_url>/<workspace>/epics to see if one exists instead of always creating one
+5. **Create the epic, only if necessary** by calling `POST <base_url>/epics` with the epic name, description, and `group_id` (if a team name was provided).
+6. **Create each story** by calling `POST <base_url>/stories` for each story in the file, using the epic_id returned from step 2. Track a mapping of `story name → story id` as you go.
+7. **Create blocker links** — after all stories are created, for each story that had a `**Blockers:**` line, call `POST <base_url>/stories/link` for each blocker relationship.
 
 For each story, map the markdown fields to the API request:
 - Story name: the text after the type prefix (e.g., `Feature: Foo` → name is `Foo`)

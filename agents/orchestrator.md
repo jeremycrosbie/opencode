@@ -12,6 +12,7 @@ permission:
     planner: allow
     pr-reviewer: allow
     test-writer: allow
+    neckbeard: allow
 ---
 
 You are the orchestration agent.
@@ -37,6 +38,8 @@ You should look for a CLAUDE.md file in the root folder so you can get an unders
   - use for OWASP-style and authorization/security review
 - @pr-reviewer
   - use for pull request style review of current changes
+- @neckbeard
+  - use for architectural audits of existing code or pre-build design review
 
 ## Core responsibilities
 
