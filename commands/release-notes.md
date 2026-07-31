@@ -1,66 +1,123 @@
 ---
-description: Generate user-friendly release notes from a commit range
-agent: pr-reviewer
+description: Generate user-friendly release notes from a commit range and append them to CHANGELOG.md
+agent: orchestrator
 subtask: true
+disable-model-invocation: true
 ---
 
-$ARGUMENTS contains the starting commit id or tag and optionally the ending tag or commit id. If only one argument, assume HEAD is the ending commit. If no arguments, do not proceed.
+$ARGUMENTS contains the starting commit/tag and optionally the ending commit/tag. If only one argument, HEAD is the end. If no arguments, stop and ask.
 
-## Process
+## Step 1 — Resolve the version spans
 
-1. Run `git log <start>..<end> --oneline` to get the list of commits in the range.
-2. For each commit, run `git show <hash> --stat --format="%s%n%b"` to get the subject, body, and files changed. Do NOT use `git diff` — you need commit intent, not code.
-3. Analyze each commit message for user-visible changes. Ignore anything that is purely internal (dependency bumps, refactors with no user impact, CI config, test-only changes, code style).
-4. Write the release notes.
-
-## Writing rules
-
-**Audience:** End users of the application — not developers. They do not know what DTOs, R2DBC, EAV, reactive chains, Groovy, Micronaut, or Serde are. Write as if explaining to a non-technical product user.
-
-**Tone:** Clear, direct, friendly. One idea per bullet. Active voice. No jargon.
-
-**Translation guide — never use these; use the plain version instead:**
-
-| Technical term | Plain English |
-|---|---|
-| `feat(...)` prefix | (drop it — just describe the feature) |
-| `fix(...)` prefix | (drop it — just describe what was fixed) |
-| `refactor` | (omit unless user-visible — if so, describe the benefit) |
-| DTO, entity, model | (omit — describe what the user can now do) |
-| EAV, custom field schema | custom fields |
-| R2DBC, reactive, Mono, Flux | (omit entirely) |
-| GString, Serde, Micronaut | (omit entirely) |
-| `addressLine2` | address line 2 / suite / apartment number |
-| `entityType`, `typeName` | entity type / field category |
-| `manifest` | custom fields file / import file |
-| `updatePolicy=force` | force import option |
-| URL path parameter | (omit — describe the behaviour) |
-
-## Output format
-
-```markdown
-## What's New
-
-- [user-facing description of new capability]
-- ...
-
-## Bug Fixes
-
-- [user-facing description of what was broken and is now fixed]
-- ...
-
-## Improvements
-
-- [user-facing description of something that works better, is clearer, or is more reliable]
-- ...
+Find all `rel-*` tags reachable within the range using:
+```
+git log <start>..<end> --format="%H %D" | grep "tag: rel-"
 ```
 
-Only include a section if it has at least one item. Omit sections with no relevant changes.
+This produces a list of intermediate tags. Build a span list:
+- First span: `<start>..<first_rel_tag>`
+- Middle spans: each consecutive tag pair
+- Final span: `<last_rel_tag>..<end>` (if end is not itself a `rel-*` tag, determine the version from a "Release version X.Y.Z" commit in that span)
 
-Each bullet should be a single sentence that answers: *"What can the user now do, or what problem did the user experience that is now resolved?"*
+Each span becomes one `## vX.Y.Z` section. If there are no intermediate tags, treat the whole range as one span.
 
-**Good example:**
-> - Importing a custom fields file now automatically applies it to the correct entity type (Leads, Opportunities, or Locations) regardless of which tab is active when you click Import.
+Process spans in order from oldest to newest — output will be prepended to CHANGELOG.md so newest ends up at top.
 
-**Bad example:**
-> - Fixed GString serialization error in BlObjectAdminController.importFieldsManifest when entityType in NativeFieldsManifestDTO did not match the URL path parameter typeName.
+## Step 2 — Collect commits
+
+Run:
+```
+git log <start>..<end> --format="%H %s"
+```
+
+For each commit hash, run:
+```
+git show <hash> --format="%s%n%b" --no-patch
+```
+
+Extract from each commit:
+- **Subject** — the first line
+- **Body** — everything after the subject
+- **Story IDs** — all `[sc-NNNNN]` tokens in the body (a commit may reference multiple)
+- **Type** — from the Conventional Commit prefix: `feat` → feature, `fix` → bug fix, `chore`/`build`/`ci`/`refactor`/`test`/`docs`/`style`/`perf` → internal
+
+Discard commits where type is internal AND the body contains no user-visible benefit. Discard merge commits, release bump commits ("Release version X.Y.Z", "RC version"), and debug commits (`debug(...)` prefix).
+
+Completion criterion: every commit in the range has been inspected; a typed, story-annotated list exists.
+
+## Step 3 — Enrich from Shortcut (optional, skip if proxy unavailable)
+
+Use the **shortcut skill** to connect and resolve the workspace. If the proxy is unavailable, skip this step and note "Shortcut unavailable — commit messages only" in your working notes.
+
+For each unique story ID collected in Step 2, fetch `GET /<workspace>/stories/<story_id>` and extract `name`, `story_type`, and `description`.
+
+Use the story name and description as the **primary source** for what this change does. The commit body is secondary context. `chore` stories are internal — omit unless the description explicitly calls out a user-visible benefit.
+
+Completion criterion: every story ID has been fetched or marked failed; failed fetches fall back to the commit body.
+
+## Step 4 — Consolidate
+
+Group commits by story ID. Commits sharing a story ID produce **one bullet**, not many. Commits with no story ID each produce at most one bullet (use the commit subject as the source).
+
+Assign each bullet to a section:
+- `feat` type or `feature` story → **What's New**
+- `fix` type or `bug` story → **Bug Fixes**, but only if the bug was discovered in a **prior shipped release**. The signal is a `QA (X.Y.Z)` or `Production (X.Y.Z)` prefix in the Shortcut story description, or a commit message that references a prior version. Bugs caught during development of the feature in the same release are omitted.
+- Everything else → omit
+
+Completion criterion: no story ID appears in more than one bullet; bullet count is less than or equal to the number of distinct stories plus orphan commits.
+
+## Step 5 — Write the bullets
+
+**Audience:** End users of the CRM — salespeople and managers. They do not know what DTOs, migrations, reactive chains, jOOQ, EAV, Micronaut, R2DBC, or Groovy are.
+
+**Voice:** Clear, direct, one idea per bullet, active voice, present tense. Each bullet answers: *"What can the user now do, or what problem did the user experience that is now fixed?"*
+
+**Translation table — render the left as the right, never use the left:**
+
+| Source term | Plain English |
+|---|---|
+| `feat(...)` / `fix(...)` prefix | drop — just describe the thing |
+| EAV, custom field schema, manifest | custom fields |
+| lead, opportunity, location | lead / deal / location (match the UI label) |
+| import job, spreadsheet import wizard | import tool / import wizard |
+| override / overwrite flag | option to update existing records |
+| R2DBC, Mono, Flux, reactive | omit |
+| DTO, entity, model, repository | omit |
+| migration, Flyway | omit |
+| URL path parameter, endpoint | omit |
+| `addressLine2` | address line 2 |
+| `uuidv7`, `gen_random_uuid` | omit |
+| nuclear delete | omit (internal tooling) |
+
+**Good bullet:**
+> You can now choose to update existing leads when importing a spreadsheet, instead of skipping rows that already exist.
+
+**Bad bullet:**
+> Fixed GString serialization in BlObjectAdminController when entityType in NativeFieldsManifestDTO mismatched the URL path parameter.
+
+Completion criterion: every bullet passes the "would a salesperson understand this?" test; no source term from the translation table appears in any bullet.
+
+## Step 6 — Assemble and append
+
+Format each section (newest first in the assembled block):
+```markdown
+## v{VERSION} — {Month D, YYYY}
+
+### What's New
+
+- [bullet]
+
+### Bug Fixes
+
+- [bullet]
+```
+
+Use today's date for all sections. Omit a section heading if it has no bullets.
+
+Then:
+1. Assemble all sections into a single block, newest version at top.
+2. Check whether `CHANGELOG.md` exists in the repo root.
+   - If it does, **prepend** the new block above the existing content.
+   - If it doesn't, create it with the new block.
+3. Write the file.
+4. Report to the user: each version name, bullet count per section, and whether Shortcut was used.
