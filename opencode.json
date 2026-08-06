@@ -77,6 +77,26 @@
     }
   },
   "model": "ollama/qwen3.6:27b",
+  "mcp": {
+    "time-reaper": {
+      "type": "local",
+      "command": ["/Users/jeremy/projects/bertram/time-reaper/.venv/bin/time-reaper"],
+      "enabled": true,
+      "environment": {
+        "HARVEST_TOKEN": "166788.pt.Sx83h1tmkS0WIRGyt9GpkT713A6_za4_P7D2uWHdM5JV5cC8f8H3TF2_ZHEy8IC9pv-SMYpTAcTdveATYNZwwA",
+        "HARVEST_ACCOUNT_ID": "421771"
+      }
+    },
+    "shortcut": {
+      "type": "local",
+      "command": ["/Users/jeremy/projects/bertram/shortcut/story-proxy/.venv/bin/story-proxy-mcp"],
+      "enabled": true,
+      "environment": {
+        "SHORTCUT_TOKEN_LEFTLANEWHEELHOUSE": "sct_rw_leftlanewheelhouse_NjkzMWU5NjQtMDg2MS00ZTc1LWFiNDktMTc1M2FmYWRlZDkwOjY5MzFlOTdhLTlkMTctNGQxYy04MjNmLWM3ZDEwNmNlNTQ0YTpiMzkzYmQ1OTgzMzJhM2RjYWMxZDhhOGFhY2JkMzk5Ng",
+        "SHORTCUT_TOKEN_CPLINVOICINGPAYMENTSPROJECT": "sct_rw_cplinvoicingpaymentsproject_NmEzNmE4NTAtYzkxMy00ZDU4LTk4ZjAtM2Q2YTg3ZGEwNWIxOjZhMzZhODUwLTIyMmQtNDIyNy1hZjAwLWYxNmQ5ODE2MmEzNjpjMDJjZGJhODIwMTFjNGIzNTY2Yjg1ZjhkMjU2N2VlZQ"
+      }
+    }
+  },
   "provider": {
     "ollama": {
       "models": {

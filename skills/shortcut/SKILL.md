@@ -1,39 +1,34 @@
 ---
 name: shortcut
-description: Interact with Shortcut stories, epics, and references via the local proxy. Use when any task needs to read or write Shortcut data — fetching stories, creating epics, linking blockers, or resolving workspace metadata.
+description: Interact with Shortcut stories, epics, and references via the shortcut MCP server. Use when any task needs to read or write Shortcut data — fetching stories, creating epics, linking blockers, or resolving workspace metadata.
 ---
 
 ## Bootstrap — run once before any other call
 
-```
-curl --max-time 3 -s http://localhost:8000/workspaces
-```
+Call the MCP tool `shortcut_list_workspaces` (no args). It returns a list of workspace slugs (e.g. `["leftlanewheelhouse"]`). Infer the correct slug from the current repo name or directory.
 
-Returns a list of workspace slugs (e.g. `["leftlanewheelhouse"]`). Infer the correct slug from the current repo name or directory. If the call fails or times out, report "Shortcut proxy unavailable" and stop — do not proceed with stale or guessed data.
+If the MCP server is unavailable (tool call errors or times out), report "Shortcut MCP unavailable" and stop — do not proceed with stale or guessed data. Do not fall back to `curl`/HTTP — the local proxy is no longer the interface; the MCP server is.
 
-Confirm auth and discover available operations:
-```
-GET http://localhost:8000/<workspace>/capabilities
-```
+Every other tool below takes `workspace` as its first argument (the slug from bootstrap).
 
-All subsequent calls use `http://localhost:8000/<workspace>/` as the base URL.
+## Tools
 
-## Endpoints
+| Tool | Args | Purpose |
+|------|------|---------|
+| `shortcut_list_workspaces` | — | List configured workspace slugs |
+| `shortcut_list_epics` | `workspace` | List all epics (id, name, app_url) |
+| `shortcut_create_epic` | `workspace, name, description?, group_id?` | Create an epic |
+| `shortcut_list_epic_stories` | `workspace, epic_id` | All stories in an epic, full detail, resolved owners/iteration/labels |
+| `shortcut_list_iteration_stories` | `workspace, iteration_id` | All stories in an iteration, full detail |
+| `shortcut_get_story` | `workspace, story_id` | Fetch a single story by ID, resolved owners/iteration/labels |
+| `shortcut_create_story` | `workspace, name, story_type?, description?, group_id?, workflow_state_id?, epic_id?, owner_ids?, labels?, estimate?, tasks?, story_links?` | Create a story |
+| `shortcut_create_story_link` | `workspace, subject_id, object_id, verb` | Create a relationship (blocks/duplicates/relates to) between two stories |
+| `shortcut_list_groups` | `workspace` | List groups (teams) |
+| `shortcut_list_labels` | `workspace` | List labels |
+| `shortcut_list_members` | `workspace` | List workspace members |
+| `shortcut_list_iterations` | `workspace` | List iterations (sprints) |
 
-| Method | Path | Purpose |
-|--------|------|---------|
-| `GET` | `/workspaces` | List configured workspace slugs |
-| `GET` | `/<workspace>/capabilities` | Confirm auth, list available operations |
-| `GET` | `/<workspace>/epics` | List all epics (id, name) |
-| `POST` | `/<workspace>/epics` | Create an epic |
-| `GET` | `/<workspace>/epics/<epic_id>/stories` | All stories in an epic with full detail |
-| `GET` | `/<workspace>/stories/<story_id>` | Fetch a single story by ID |
-| `POST` | `/<workspace>/stories` | Create a story |
-| `POST` | `/<workspace>/stories/link` | Create a blocking relationship between two stories |
-| `GET` | `/<workspace>/reference/groups` | List groups (teams) |
-| `GET` | `/<workspace>/reference/labels` | List labels |
-
-Use `curl` for all calls.
+All tools return JSON as a string — parse before use. Tool names above assume the MCP server is registered as `shortcut` in `opencode.json` (tool names are prefixed with the server name); adjust the prefix if it's registered under a different name.
 
 ## Story shape (key fields)
 
@@ -51,9 +46,10 @@ Use `curl` for all calls.
 
 ## Blocker link shape
 
+Call `shortcut_create_story_link` with:
 ```json
-POST /<workspace>/stories/link
 {
+  "workspace": "<slug>",
   "subject_id": <blocker_story_id>,
   "object_id": <blocked_story_id>,
   "verb": "blocks"
@@ -63,5 +59,5 @@ POST /<workspace>/stories/link
 ## Rules
 
 - Never modify Shortcut data unless explicitly asked to create or link stories.
-- If a story fetch returns no data or a 404, fall back to the commit message for context — do not abort.
+- If a story fetch returns no data or an error, fall back to the commit message for context — do not abort.
 - `chore` story type is internal — omit from user-facing output unless the description explicitly describes a user-visible benefit.

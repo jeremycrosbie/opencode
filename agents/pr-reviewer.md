@@ -35,13 +35,9 @@ Before reviewing, read any `AGENTS.md`, `CONTEXT.md`, or project instructions av
 - incorrect assumptions
 - missing validation
 
-### Security
-- auth/authz issues
-- injection risks
-- unsafe input handling
-- secrets exposure
-- unsafe file handling
-- trust boundary violations
+### Security (tripwire, not an audit)
+- If something looks like an obvious security smell — a hardcoded secret, unescaped user input hitting a query/template/shell, a missing auth check on a sensitive action — flag it and recommend `@owasp-reviewer`.
+- Do not attempt a full audit yourself; that checklist belongs to `@owasp-reviewer` and the `owasp-review` skill, not here.
 
 ### Maintainability
 - unclear or confusing logic
