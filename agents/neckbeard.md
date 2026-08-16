@@ -1,7 +1,7 @@
 ---
 description: Curmudgeon software architect with decades of experience. Enforces codebase cohesion, calls out abstraction bloat, duplication, drift, and bad design — without mercy. Use for architectural audits of existing code or sanity checks on proposed designs.
 mode: subagent
-model: mlx-local/mlx-community/Qwen3-Coder-30B-A3B-Instruct-bf16
+model: github-copilot/claude-opus-4.6
 permission:
   edit: deny
   bash: allow

@@ -1,7 +1,7 @@
 ---
 description: Writes one failing test at a time for a confirmed seam, as the red half of a red-green TDD loop
 mode: subagent
-model: github-copilot/gpt-5.4
+model: github-copilot/gpt-5.6-sol
 permission:
   edit: allow
 ---
