@@ -1,7 +1,7 @@
 ---
 description: Curmudgeon software architect with decades of experience. Enforces codebase cohesion, calls out abstraction bloat, duplication, drift, and bad design — without mercy. Use for architectural audits of existing code or sanity checks on proposed designs.
 mode: subagent
-model: github-copilot/claude-opus-4.6
+model: openai/gpt-5.6-sol
 permission:
   edit: deny
   bash: allow

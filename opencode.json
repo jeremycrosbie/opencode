@@ -23,6 +23,7 @@
       "tail *": "allow",
       "cat": "allow",
       "cat *": "allow",
+
       "git status": "allow",
       "git status *": "allow",
       "git diff": "allow",
@@ -31,13 +32,6 @@
       "git log *": "allow",
       "git show": "allow",
       "git show *": "allow",
-      "date *": "allow",
-      "find *": "allow",
-      "head *": "allow",
-      "echo *": "allow",
-      "which *": "allow",
-      "grep *": "allow",
-      "rg *": "allow",
       "git branch": "allow",
       "git branch *": "allow",
       "git remote": "allow",
@@ -48,21 +42,75 @@
       "git ls-files": "allow",
       "git ls-files *": "allow",
       "git rev-parse *": "allow",
+      "git rev-list *": "allow",
       "git describe": "allow",
       "git describe *": "allow",
       "git shortlog *": "allow",
       "git tag": "allow",
       "git tag *": "allow",
       "git grep *": "allow",
+      "git fetch": "allow",
+      "git fetch *": "allow",
+      "git config --get *": "allow",
+      "git config --list *": "allow",
+      "git cat-file *": "allow",
+      "git ls-tree *": "allow",
+      "git merge-base *": "allow",
+      "git for-each-ref *": "allow",
+      "git check-ignore *": "allow",
+      "git worktree list": "allow",
+      "git worktree list *": "allow",
+
+      "date *": "allow",
+      "find *": "allow",
+      "head *": "allow",
+      "echo *": "allow",
+      "which *": "allow",
+      "grep *": "allow",
+      "rg *": "allow",
+      "stat *": "allow",
+      "file *": "allow",
+      "type *": "allow",
+      "test *": "allow",
+      "[ *": "allow",
+      "true": "allow",
+      "false": "allow",
+
       "npm list *": "allow",
+      "npm run *": "allow",
+      "npm test": "allow",
+      "npm test *": "allow",
+      "npx *": "allow",
+      "node *": "allow",
+      "yarn *": "allow",
+      "pnpm *": "allow",
+
+      "python *": "allow",
+      "python3 *": "allow",
+      "uv run *": "allow",
+      "uv *": "allow",
+      "poetry run *": "allow",
+      "pip list *": "allow",
+      "pip show *": "allow",
+      "ruff *": "allow",
+      "mypy *": "allow",
+      "pytest *": "allow",
+
       "docker logs *": "allow",
-      "sdk list *": "allow",
-      "env": "allow",
-      "printenv *": "allow",
-      "sdk env": "allow",
       "docker ps": "allow",
       "docker ps *": "allow",
+      "docker inspect *": "allow",
+      "docker images *": "allow",
       "docker-compose *": "allow",
+
+      "sdk list *": "allow",
+      "sdk env": "allow",
+      "env": "allow",
+      "printenv *": "allow",
+      "open *": "allow",
+      "curl *": "allow",
+      "jq *": "allow",
+
       "*": "ask"
     }
   },
@@ -80,24 +128,45 @@
   "mcp": {
     "time-reaper": {
       "type": "local",
-      "command": ["/Users/jeremy/projects/bertram/time-reaper/.venv/bin/time-reaper"],
+      "command": ["{env:HOME}/.local/bin/time-reaper"],
       "enabled": true,
       "environment": {
-        "HARVEST_TOKEN": "166788.pt.Sx83h1tmkS0WIRGyt9GpkT713A6_za4_P7D2uWHdM5JV5cC8f8H3TF2_ZHEy8IC9pv-SMYpTAcTdveATYNZwwA",
-        "HARVEST_ACCOUNT_ID": "421771"
+        "HARVEST_TOKEN": "{env:HARVEST_TOKEN}",
+        "HARVEST_ACCOUNT_ID": "{env:HARVEST_ACCOUNT_ID}"
       }
     },
     "shortcut": {
       "type": "local",
-      "command": ["/Users/jeremy/projects/bertram/shortcut/story-proxy/.venv/bin/story-proxy-mcp"],
+      "command": ["{env:HOME}/.local/bin/story-proxy-mcp"],
       "enabled": true,
       "environment": {
-        "SHORTCUT_TOKEN_LEFTLANEWHEELHOUSE": "sct_rw_leftlanewheelhouse_NjkzMWU5NjQtMDg2MS00ZTc1LWFiNDktMTc1M2FmYWRlZDkwOjY5MzFlOTdhLTlkMTctNGQxYy04MjNmLWM3ZDEwNmNlNTQ0YTpiMzkzYmQ1OTgzMzJhM2RjYWMxZDhhOGFhY2JkMzk5Ng",
-        "SHORTCUT_TOKEN_CPLINVOICINGPAYMENTSPROJECT": "sct_rw_cplinvoicingpaymentsproject_NmEzNmE4NTAtYzkxMy00ZDU4LTk4ZjAtM2Q2YTg3ZGEwNWIxOjZhMzZhODUwLTIyMmQtNDIyNy1hZjAwLWYxNmQ5ODE2MmEzNjpjMDJjZGJhODIwMTFjNGIzNTY2Yjg1ZjhkMjU2N2VlZQ"
+        "SHORTCUT_TOKEN_LEFTLANEWHEELHOUSE": "{env:SHORTCUT_TOKEN_LEFTLANEWHEELHOUSE}",
+        "SHORTCUT_TOKEN_CPLINVOICINGPAYMENTSPROJECT": "{env:SHORTCUT_TOKEN_CPLINVOICINGPAYMENTSPROJECT}"
       }
     }
   },
   "provider": {
+		"anthropic": {
+			"options": {
+				"apiKey": "{env:ANTHROPIC_OPENCODE_KEY}"
+			},
+			"whitelist": [
+				"claude-opus-5",
+				"claude-sonnet-5",
+				"claude-opus-4-8",
+				"claude-fable-5"
+			]
+		},
+		"openai": {
+			"options": {
+				"apiKey": "{env:OPENAI_OPENCODE_KEY}"
+			},
+			"whitelist": [
+				"gpt-5.6-sol",
+				"gpt-5.6-terra",
+				"gpt-5.6-luna"
+			]
+		},
     "ollama": {
       "models": {
         "qwen3-coder-next": {

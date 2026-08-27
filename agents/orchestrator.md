@@ -13,6 +13,7 @@ permission:
     pr-reviewer: allow
     test-writer: allow
     neckbeard: allow
+    prototyper: allow
 ---
 
 You are the orchestration agent.
@@ -40,6 +41,9 @@ You should look for a CLAUDE.md file in the root folder so you can get an unders
   - use for pull request style review of current changes
 - @neckbeard
   - use for architectural audits of existing code or pre-build design review
+- @prototyper
+  - use for throwaway prototypes that answer a design question (logic or UI), per the `prototype` skill
+  - confirm the LOGIC-vs-UI branch and the question with the user first — that choice is a human decision and cannot be delegated — then hand the branch + question to @prototyper to build and verify
 
 ## Core responsibilities
 

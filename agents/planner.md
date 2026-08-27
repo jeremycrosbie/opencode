@@ -1,7 +1,7 @@
 ---
 description: Analyzes specs and creates implementation plans
 mode: all
-model: github-copilot/claude-opus-4.6
+model: anthropic/claude-opus-4.8
 options:
   effort: high
 permission:
