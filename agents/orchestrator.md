@@ -1,7 +1,7 @@
 ---
 description: Coordinates planning, implementation, testing, and review
 mode: primary
-model: github-copilot/claude-sonnet-4.6
+model: github-copilot/claude-sonnet-5
 options:
   effort: medium
 permission:
