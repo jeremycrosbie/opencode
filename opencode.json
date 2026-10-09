@@ -128,7 +128,7 @@
   "mcp": {
     "time-reaper": {
       "type": "local",
-      "command": ["{env:HOME}/.local/bin/time-reaper"],
+      "command": ["{env:TIME_REAPER_PATH}"],
       "enabled": true,
       "environment": {
         "HARVEST_TOKEN": "{env:HARVEST_TOKEN}",
@@ -137,11 +137,12 @@
     },
     "shortcut": {
       "type": "local",
-      "command": ["{env:HOME}/.local/bin/story-proxy-mcp"],
+      "command": ["{env:SHORTCUT_PROXY_PATH}"],
       "enabled": true,
       "environment": {
         "SHORTCUT_TOKEN_LEFTLANEWHEELHOUSE": "{env:SHORTCUT_TOKEN_LEFTLANEWHEELHOUSE}",
-        "SHORTCUT_TOKEN_CPLINVOICINGPAYMENTSPROJECT": "{env:SHORTCUT_TOKEN_CPLINVOICINGPAYMENTSPROJECT}"
+        "SHORTCUT_TOKEN_CPLINVOICINGPAYMENTSPROJECT": "{env:SHORTCUT_TOKEN_CPLINVOICINGPAYMENTSPROJECT}",
+				"SHORTCUT_TOKEN_PERENNIALSWEBSITE": "{env:SHORTCUT_TOKEN_PERENNIALSWEBSITE}"
       }
     }
   },
