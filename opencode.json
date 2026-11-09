@@ -117,7 +117,7 @@
   "agent": {
     "build": {
       "mode": "primary",
-      "model": "github-copilot/gpt-5.4",
+      "model": "github-copilot/gpt-6.1-sol",
       "permission": {
         "edit": "allow",
         "bash": "allow"
@@ -152,8 +152,8 @@
 				"apiKey": "{env:ANTHROPIC_OPENCODE_KEY}"
 			},
 			"whitelist": [
-				"claude-opus-5",
-				"claude-sonnet-5",
+				"claude-opus-5-5",
+				"claude-sonnet-5-5",
 				"claude-opus-4-8",
 				"claude-fable-5"
 			]
@@ -163,9 +163,8 @@
 				"apiKey": "{env:OPENAI_OPENCODE_KEY}"
 			},
 			"whitelist": [
-				"gpt-5.6-sol",
-				"gpt-5.6-terra",
-				"gpt-5.6-luna"
+				"gpt-6.1-sol",
+				"gpt-6-luna"
 			]
 		},
     "ollama": {
@@ -204,5 +203,8 @@
         }
       }
 		}
-  }
+  },
+  "plugins": [
+    "@dietrichgebert/ponytail"
+  ]
 }

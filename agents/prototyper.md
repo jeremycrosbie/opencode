@@ -1,7 +1,7 @@
 ---
 description: Builds throwaway prototypes (logic or UI) per the prototype skill, on a pinned model
 mode: all
-model: openai/gpt-5.6-terra
+model: openai/gpt-6.1-sol
 options:
   effort: medium
 permission:

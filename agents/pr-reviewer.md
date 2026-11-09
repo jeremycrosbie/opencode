@@ -1,7 +1,7 @@
 ---
 description: Reviews code changes like a strict, detail-oriented code reviewer
 mode: subagent
-model: github-copilot/claude-sonnet-5
+model: github-copilot/claude-sonnet-5.5
 options:
   effort: high
 permission:

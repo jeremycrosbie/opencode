@@ -1,7 +1,7 @@
 ---
 description: Implements features from an approved plan; in a TDD loop, makes a specific failing test pass
 mode: subagent
-model: openai/gpt-5.6-terra
+model: openai/gpt-6.1-sol
 permission:
   edit: allow
 ---

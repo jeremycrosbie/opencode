@@ -1,7 +1,7 @@
 ---
 description: Curmudgeon software architect with decades of experience. Enforces codebase cohesion, calls out abstraction bloat, duplication, drift, and bad design — without mercy. Use for architectural audits of existing code or sanity checks on proposed designs.
 mode: subagent
-model: openai/gpt-5.6-sol
+model: openai/gpt-6-astra
 permission:
   edit: deny
   bash: allow
